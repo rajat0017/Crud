@@ -1,20 +1,65 @@
 var addstorage = document.getElementById('my-form');
 var names = document.getElementById('name');
 var emails = document.getElementById('email');
+
 addstorage.addEventListener('submit', addtostorage);
+
+window.addEventListener('DOMContentLoaded', ()=> {
+    axios.get("https://crudcrud.com/api/a24677eebf454470b1dbd3c827892713/data")
+    .then((response)=> {
+        
+        console.log(response)
+        for(var i=0;i<response.data.length;i++){
+            additemlist(response.data[i]);
+        }
+        
+    })
+})
 
 
 var container = document.getElementById('my-form');
 
-container.addEventListener('submit', additemlist);
+// container.addEventListener('submit', additemlist);
 
+
+
+
+
+function addtostorage() {
+    
+    if(names.value==='' || emails.value===''){
+        alert('Plese enter details');
+    }
+   else {
+
+    let myobj = {
+        name: names.value,
+        email: emails.value
+    };
+    
+    axios.post("https://crudcrud.com/api/a24677eebf454470b1dbd3c827892713/data",myobj)
+    .then((response)=> {
+        console.log(response);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+    
+    // var objstr = JSON.stringify(myobj);
+    // localStorage.setItem(names.value, objstr);
+    // var newobj = JSON.parse(localStorage.getItem(names.value));
+    additemlist(myobj);
+}
+
+}
 function additemlist(myobj) {
-    myobj.preventDefault();
+    
+   
 
     var li = document.createElement('li');
-    li.className = emails.value;
-    li.id = names.value;
-    li.appendChild(document.createTextNode('Name=  ' +names.value +',  Email=' + emails.value));
+    li.className = myobj.name;
+    li.id = myobj.email;
+    li.appendChild(document.createTextNode('Name= ' +myobj.name +',  Email=' + myobj.email));
     
     container.appendChild(li);
 
@@ -28,7 +73,7 @@ function additemlist(myobj) {
     editbtn.appendChild(document.createTextNode('edit'));
     li.appendChild(editbtn);
     
-
+    event.preventDefault();
 
 newbutton.onclick=   ()  =>{
   
@@ -46,26 +91,5 @@ editbtn.onclick = () => {
     localStorage.removeItem(li.id);
 
 }
-}
-
-function addtostorage(e) {
-
-    let myobj = {
-        name: names.value,
-        email: emails.value
-    };
-
-    axios.post("https://crudcrud.com/api/e2406637d23c41319fcd969d14b2e6de/appointmentData",myobj)
-    .then((response)=> {
-        console.log(response);
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-
-    // var objstr = JSON.stringify(myobj);
-    // localStorage.setItem(names.value, objstr);
-    // var newobj = JSON.parse(localStorage.getItem(names.value));
-   
 
 }
