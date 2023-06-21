@@ -5,7 +5,7 @@ var emails = document.getElementById('email');
 addstorage.addEventListener('submit', addtostorage);
 
 window.addEventListener('DOMContentLoaded', ()=> {
-    axios.get("https://crudcrud.com/api/a24677eebf454470b1dbd3c827892713/data")
+    axios.get("https://crudcrud.com/api/e27cf16cc9684e57b952ca6e6bbd508a/data")
     .then((response)=> {
         
         console.log(response)
@@ -38,7 +38,7 @@ function addtostorage() {
         email: emails.value
     };
     
-    axios.post("https://crudcrud.com/api/a24677eebf454470b1dbd3c827892713/data",myobj)
+    axios.post("https://crudcrud.com/api/e27cf16cc9684e57b952ca6e6bbd508a/data",myobj)
     .then((response)=> {
         console.log(response);
     })
@@ -80,17 +80,39 @@ newbutton.onclick=   ()  =>{
   
     container.removeChild(li);
     console.log(li);
-    axios.delete(`https://crudcrud.com/api/a24677eebf454470b1dbd3c827892713/data/${myobj._id}`)
+    axios.delete(`https://crudcrud.com/api/e27cf16cc9684e57b952ca6e6bbd508a/data/${myobj._id}`)
     .then((response)=> {
         console.log(response);
+    }).catch((err)=>{
+        console.log(err);
     })
-    localStorage.removeItem(li.id);
+    // localStorage.removeItem(li.id);
 }
 editbtn.onclick = () => {
     
-    document.getElementById('name').value=li.id;
-   document.getElementById('email').value=li.className;
-   
+    document.getElementById('name').value=li.className;
+   document.getElementById('email').value=li.id;
+
+   axios.get(`https://crudcrud.com/api/e27cf16cc9684e57b952ca6e6bbd508a/data/${myobj._id}`)
+   .then((response)=> {
+    const data= response.data;
+    data.Name=names.value;
+    data.Email=emails.value;
+    axios.delete(`https://crudcrud.com/api/e27cf16cc9684e57b952ca6e6bbd508a/data/${myobj._id}`)
+    .then((response)=> {
+        console.log(response);
+    }).catch((err)=>{
+        console.log(err);
+    })
+    axios.put("https://crudcrud.com/api/e27cf16cc9684e57b952ca6e6bbd508a/data", data)
+    .then((response)=> {
+        console.log(response);
+   })
+   .catch((err)=>{
+    console.log(err);
+   })
+
+   })
    container.removeChild(li);
     localStorage.removeItem(li.id);
 
