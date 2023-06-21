@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', ()=> {
         
         console.log(response)
         for(var i=0;i<response.data.length;i++){
+            
             additemlist(response.data[i]);
         }
         
@@ -66,11 +67,11 @@ function additemlist(myobj) {
     var newbutton = document.createElement('button');
     newbutton.className='btn btn-danger btn-float-right delete';
     
-    newbutton.appendChild(document.createTextNode('delete'));
+    newbutton.appendChild(document.createTextNode('Delete'));
     li.appendChild(newbutton);
     var editbtn = document.createElement('button');
     editbtn.className='btn btn-danger btn-float-right delete';
-    editbtn.appendChild(document.createTextNode('edit'));
+    editbtn.appendChild(document.createTextNode('Edit'));
     li.appendChild(editbtn);
     
     event.preventDefault();
@@ -79,7 +80,10 @@ newbutton.onclick=   ()  =>{
   
     container.removeChild(li);
     console.log(li);
-
+    axios.delete(`https://crudcrud.com/api/a24677eebf454470b1dbd3c827892713/data/${myobj._id}`)
+    .then((response)=> {
+        console.log(response);
+    })
     localStorage.removeItem(li.id);
 }
 editbtn.onclick = () => {
